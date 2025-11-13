@@ -4,88 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora Presupuestos Iberdrola</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f0fdf4; min-height: 100vh; padding: 1rem; }
-        .container { max-width: 80rem; margin: 0 auto; }
-        .card { background: white; border-radius: 1rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); overflow: hidden; border: 1px solid #bbf7d0; }
-        .header { background: linear-gradient(to right, #166534, #22c55e); padding: 1.5rem; color: white; }
-        .header-title { display: flex; align-items: center; gap: .75rem; margin-bottom: .5rem; }
-        .header-title h1 { font-size: 1.875rem; font-weight: bold; }
-        .header-subtitle { color: #bbf7d0; }
-        .content { padding: 2rem; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
-        .section { display: flex; flex-direction: column; gap: 1.5rem; }
-        .section-title { font-size: 1.25rem; font-weight: 600; color: #14532d; }
-        .box { background: #f9fafb; padding: 1.25rem; border-radius: .75rem; border: 1px solid #e5e7eb; }
-        .label { display: flex; align-items: center; gap: .5rem; font-size: .875rem; font-weight: 500; color: #374151; margin-bottom: .75rem; }
-        .button-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
-        .btn { padding: .75rem; border-radius: .5rem; font-weight: 500; border: 1px solid #d1d5db; cursor: pointer; transition: all .2s; background: white; color: #166534; }
-        .btn.active { background: #16a34a; border-color: #15803d; color: white; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-        .btn.active-purple { background: #15803d; border-color: #166534; color: white; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-        .btn:hover { opacity: .93; }
-        .btn-subtitle { font-size: .75rem; margin-top: .25rem; opacity: .9; }
-        .select { width: 100%; padding: .6rem .75rem; border-radius: .5rem; border: 1px solid #d1d5db; font-size: .9rem; color: #14532d; background: white; }
-        .checkbox-box { display: flex; align-items: flex-start; gap: .75rem; padding: 1rem; border-radius: .5rem; cursor: pointer; }
-        .checkbox-box input { margin-top: .25rem; width: 1.25rem; height: 1.25rem; cursor: pointer; }
-        .checkbox-content { flex: 1; }
-        .checkbox-title { font-weight: 500; color: #14532d; }
-        .checkbox-desc { font-size: .875rem; color: #374151; margin-top: .25rem; }
-        .checkbox-price { font-size: .875rem; font-weight: 600; margin-top: .25rem; }
-        .warning-box { background: #fefce8; border: 1px solid #facc15; padding: 1.25rem; border-radius: .75rem; }
-        .info-box { background: #ecfdf5; border: 1px solid #6ee7b7; padding: 1.25rem; border-radius: .75rem; }
-        .extra-moves { background: #ecfdf5; border: 1px solid #86efac; }
-        .extra-manguera { background: #fef2f2; border: 1px solid #fecaca; }
-        .extra-ipack { background: #e0f2fe; border: 1px solid #7dd3fc; }
-        .result-box { background: linear-gradient(to bottom right, #14532d, #16a34a); color: white; padding: 1.5rem; border-radius: .75rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-        .result-label { font-size: .875rem; opacity: .9; margin-bottom: .5rem; }
-        .result-price { font-size: 1.75rem; font-weight: bold; margin-bottom: .25rem; min-height: 2rem; }
-        .result-subtitle { font-size: .875rem; opacity: .9; }
-        .result-row { display: flex; justify-content: space-between; font-size: .9rem; margin-top: .25rem; }
-        .result-row span:last-child { font-weight: 600; }
-        .desglose-box { background: #f9fafb; padding: 1.5rem; border-radius: .75rem; border: 1px solid #e5e7eb; }
-        .desglose-title { font-weight: 600; color: #14532d; margin-bottom: 1rem; }
-        .desglose-items { display: flex; flex-direction: column; gap: .5rem; }
-        .desglose-item { display: flex; justify-content: space-between; align-items: flex-start; padding: .5rem .75rem; border-radius: .5rem; background: white; border: 1px solid #e5e7eb; font-size: .875rem; }
-        .desglose-item.destacado { background: #ecfdf5; border-color: #6ee7b7; }
-        .desglose-concepto { color: #374151; max-width: 70%; }
-        .desglose-precio { font-weight: 600; font-size: .875rem; white-space: nowrap; margin-left: .5rem; color: #111827; }
-        .desglose-precio.descuento { color: #16a34a; }
-        .desglose-precio.negativo { color: #b91c1c; }
-        .promo-box { margin-top: 1rem; background: #ecfdf5; border: 1px solid #6ee7b7; padding: .75rem 1rem; border-radius: .75rem; font-size: .8rem; color: #065f46; }
-        .cashback-box { margin-top: 1rem; background: #e0f2fe; border: 1px solid #7dd3fc; padding: .75rem 1rem; border-radius: .75rem; font-size: .8rem; color: #0f172a; }
-        .accordion { margin-top: 1.5rem; padding: 1rem 1.1rem; background: #f9fafb; border-radius: .75rem; border: 1px solid #e5e7eb; }
-        .accordion-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: .9rem; font-weight: 500; color: #14532d; }
-        .accordion-icon { font-size: .8rem; transition: transform .2s; }
-        .accordion.open .accordion-icon { transform: rotate(90deg); }
-        .accordion-body { margin-top: .75rem; display: none; }
-        .ssaa-grid { display: flex; flex-direction: column; gap: .75rem; margin-top: .5rem; }
-        .ssaa-item { background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: .75rem; padding: .75rem 1rem; font-size: .8rem; }
-        .ssaa-title { font-weight: 600; color: #14532d; margin-bottom: .15rem; }
-        .ssaa-tagline { font-size: .78rem; color: #047857; margin-bottom: .25rem; }
-        .ssaa-list { margin-left: 1rem; list-style: disc; color: #374151; }
-        .ssaa-list li { margin-bottom: .15rem; }
-        .charger-info-header { margin-top: 1rem; }
-        .chip-btn { border-radius: 9999px; border: 1px solid #d1d5db; background: white; font-size: .75rem; padding: .35rem .75rem; cursor: pointer; color: #166534; display: inline-flex; align-items: center; gap: .25rem; transition: all .15s; }
-        .chip-btn:hover { background: #ecfdf5; }
-        .chip-btn.active-chip { background: #16a34a; border-color: #15803d; color: white; }
-        .info-detail-box { margin-top: .5rem; padding: .75rem 1rem; background: #ecfdf5; border-radius: .75rem; border: 1px solid #6ee7b7; font-size: .8rem; color: #064e3b; }
-        .info-detail-box ul { margin-top: .35rem; margin-left: 1rem; list-style: disc; }
-        .info-detail-box li { margin-bottom: .15rem; }
-        .pulsar-price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: .75rem; }
-        .price-card { background: white; border: 1px solid #e5e7eb; border-radius: .75rem; padding: 1rem; }
-        .price-card h4 { font-size: 1rem; color: #14532d; margin-bottom: .35rem; }
-        .price-row { display: flex; justify-content: space-between; font-size: .9rem; margin: .25rem 0; }
-        .price-row .tag { font-weight: 500; color: #374151; }
-        .price-note { font-size: .75rem; color: #6b7280; margin-top: .5rem; line-height: 1.2; }
-        .badge { display: inline-block; font-size: .7rem; background: #ecfdf5; border: 1px solid #6ee7b7; color: #065f46; border-radius: 9999px; padding: .15rem .5rem; margin-left: .35rem; }
-        .phase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin-top: .5rem; }
-        .phase-btn { padding: .5rem .75rem; border: 1px solid #d1d5db; border-radius: .5rem; background: white; color: #166534; font-size: .85rem; cursor: pointer; }
-        .phase-btn.active { background: #16a34a; border-color: #15803d; color: #fff; }
-        .hidden { display: none; }
-        .badge-tri { margin-top: .5rem; display: inline-flex; align-items: center; gap: .4rem; padding: .35rem .6rem; font-size: .78rem; border-radius: 9999px; border: 1px solid #f59e0b; background:#fffbeb; color:#92400e; }
-        .trifasico-note { margin-top: .75rem; background:#fffbeb; border:1px solid #f59e0b; color:#92400e; padding:.75rem 1rem; border-radius:.75rem; font-size:.85rem; }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
@@ -101,13 +20,13 @@
                 </div>
                 <p class="header-subtitle">· Smart Mobility Hogar ·</p>
             </div>
-            <div class="content">
+            <main class="content">
                 <div class="grid">
                     <div class="section">
                         <h2 class="section-title">Configuración</h2>
 
                         <div class="box">
-                            <div class="label">Tipo de instalación</div>
+                            <label for="selectInstalacion" class="label">Tipo de instalación</label>
                             <select id="selectInstalacion" class="select" onchange="setTipoInstalacion(this.value)">
                                 <option value="none" selected>Seleccionar tipo de vivienda</option>
                                 <option value="uni">Vivienda unifamiliar</option>
@@ -116,7 +35,7 @@
                                 <option value="uni_gdp">Vivienda unifamiliar + GDP</option>
                                 <option value="com_mismo_gdp">Garaje comunitario en mismo edificio + GDP</option>
                             </select>
-                            <p style="font-size:.75rem;color:#6b7280;margin-top:.5rem;">En las variantes “+ GDP”, el gestor dinámico va incluido en el precio del paquete de instalación.</p>
+                            <p class="helper-text">En las variantes “+ GDP”, el gestor dinámico va incluido en el precio del paquete de instalación.</p>
                         </div>
 
                         <div class="box">
@@ -133,25 +52,26 @@
                             </div>
 
                             <div id="pulsarPhaseWrapper" class="hidden">
-                                <div class="label" style="margin-top:.75rem;">Fases del Pulsar Max</div>
+                                <p class="label label-subtitle">Fases del Pulsar Max</p>
                                 <div class="phase-grid">
                                     <button type="button" id="btnMono" class="phase-btn active" onclick="setFase('mono')">Monofásico 7,4 kW</button>
                                     <button type="button" id="btnTri" class="phase-btn" onclick="setFase('tri')">Trifásico 22 kW</button>
                                 </div>
+                                <span id="triBadge" class="badge-tri hidden" role="status" aria-live="polite">Instalación trifásica: presupuesto a medida</span>
                             </div>
                             <div class="charger-info-header">
-                                <span style="font-size:.8rem;color:#6b7280;">Más información sobre los equipos</span>
-                                <div style="display:flex;gap:.5rem;margin-top:.5rem;flex-wrap:wrap;">
+                                <span class="muted-caption">Más información sobre los equipos</span>
+                                <div class="chip-group">
                                     <button type="button" class="chip-btn" id="chipVestel" onmouseover="showChargerInfo('vestel')" onclick="showChargerInfo('vestel')">Detalles Vestel</button>
                                     <button type="button" class="chip-btn" id="chipPulsar" onmouseover="showChargerInfo('pulsar')" onclick="showChargerInfo('pulsar')">Detalles Pulsar Max</button>
                                 </div>
                             </div>
-                            <div id="chargerInfoBox" class="info-detail-box" style="display:none;"></div>
+                            <div id="chargerInfoBox" class="info-detail-box"></div>
                         </div>
 
-                        <div class="warning-box" id="avisoGarajeDistinto" style="display:none;">
-                            <span class="checkbox-title">Garaje en distinto edificio</span>
-                            <p class="checkbox-desc" style="color:#b45309;">Puede requerir nuevo punto de suministro. Ese coste no está incluido.</p>
+                        <div class="warning-box hidden" id="avisoGarajeDistinto" role="status" aria-live="polite">
+                            <span class="checkbox-title">Garaje comunitario en distinto edificio</span>
+                            <p class="checkbox-desc warning-text">Requiere presupuesto in situ. Contactaremos para coordinar una visita técnica.</p>
                         </div>
 
                         <div class="info-box">
@@ -171,7 +91,7 @@
                             </label>
                         </div>
 
-                        <h3 style="font-weight:600;color:#14532d;">Extras</h3>
+                        <h3 class="extras-title">Extras</h3>
 
                         <label class="checkbox-box extra-moves">
                             <input type="checkbox" id="checkMoves" checked onchange="updateCalc()">
@@ -196,17 +116,17 @@
                             <div class="checkbox-content">
                                 <span class="checkbox-title">i+Pack Mobility</span>
                                 <p class="checkbox-desc">Servicio de averías PR + coche sustitución + traslados + 20 % recarga pública 1 año. <strong>Obligatorio para activar la promo del 10 % (colectivo i+Pack).</strong> No se suma al presupuesto del simulador; es un servicio mensual aparte.</p>
-                                <p class="checkbox-price" style="color:#0369a1;">12,95 €/mes + IVA (no incluido en el total)</p>
+                                <p class="checkbox-price price-note-blue">12,95 €/mes + IVA (no incluido en el total)</p>
                             </div>
                         </label>
 
                         <div class="accordion" id="accordionSSAA">
-                            <div class="accordion-header" onclick="toggleSSAA()">
+                            <button type="button" class="accordion-header" id="accordionToggle" aria-expanded="false" aria-controls="ssaaBody" onclick="toggleSSAA()">
                                 <span>Servicios i+Mobility (opcionales)</span>
                                 <span class="accordion-icon">▶</span>
-                            </div>
+                            </button>
                             <div class="accordion-body" id="ssaaBody">
-                                <p style="font-size:.8rem;color:#374151;margin-bottom:.5rem;">Resumen orientativo de los servicios i+Mobility asociados a Smart Mobility Hogar. No modifican el importe de este simulador.</p>
+                                <p class="checkbox-desc paragraph-spaced">Resumen orientativo de los servicios i+Mobility asociados a Smart Mobility Hogar. No modifican el importe de este simulador.</p>
                                 <div class="ssaa-grid">
                                     <div class="ssaa-item">
                                         <div class="ssaa-title">i+Repair Mobility</div>
@@ -246,17 +166,17 @@
                     </div>
                     <div class="section">
                         <h2 class="section-title">Presupuesto</h2>
-                        <div class="result-box">
+                        <section class="result-box result-region" aria-live="polite" aria-label="Resumen de presupuesto">
                             <div class="result-label">Importe estimado Smart Mobility Hogar</div>
                             <div class="result-price" id="precioTotal"></div>
                             <div class="result-subtitle">IVA 21 % incluido</div>
-                            <div style="margin-top:.75rem;border-top:1px solid rgba(255,255,255,0.3);padding-top:.5rem;font-size:.85rem;">
+                            <div class="result-breakdown">
                                 <div class="result-row"><span>Base imponible (sin IVA)</span><span id="precioSinIva"></span></div>
                                 <div class="result-row"><span>IVA 21 %</span><span id="precioIva"></span></div>
-                                <div class="result-row" style="margin-top:.25rem;"><span style="font-weight:700;">Total con IVA</span><span id="precioTotalResumen" style="font-weight:700;"></span></div>
+                                <div class="result-row"><span class="result-total-label">Total con IVA</span><span id="precioTotalResumen" class="result-total-value"></span></div>
                             </div>
-                            <div id="triNote" class="trifasico-note" style="display:none;">Pulsar Max trifásico seleccionado: la instalación se presupuesta in situ y no se incluye en este simulador.</div>
-                            <div class="promo-box" id="promoBox" style="display:none;">
+                            <div id="triNote" class="trifasico-note" role="status" aria-live="polite">Pulsar Max trifásico seleccionado: la instalación se presupuesta in situ y no se incluye en este simulador.</div>
+                            <div class="promo-box" id="promoBox">
                                 <strong>Oferta 10 % PR + instalación + extras activa.</strong><br>
                                 Incluye un descuento adicional de <strong>100 € (IVA incl.)</strong> sobre MOVES base 199 €.
                             </div>
@@ -264,7 +184,7 @@
                                 <strong>Cashback Smart Mobility Hogar:</strong><br>
                                 500 € en saldo Mi Iberdrola (8,33 €/mes durante 5 años). No se descuenta de este presupuesto.
                             </div>
-                        </div>
+                        </section>
 
                         <div class="desglose-box">
                             <h3 class="desglose-title">Desglose de conceptos (sin IVA)</h3>
@@ -272,340 +192,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </main>
         </div>
 
-        <script>
-            const IVA_TIPO = 0.21;
-            const PRECIOS_PR_BASE = {
-                vestel_base: 550.00,
-                pulsar_5m: 699.00,
-                pulsar_7m: 799.00,
-                pulsar_tri_5m: 750.00,
-                pulsar_tri_7m: 850.00
-            };
-            const PRECIOS_INST_BASE = {
-                uni: 699.00,
-                uni_gdp: 898.00,
-                com_mismo: 899.00,
-                com_mismo_gdp: 1098.00,
-                com_distinto: 1087.79
-            };
-            const PRECIO_MOVES_GENERAL_BASE = 199.00;
-            const PRECIO_MOVES_CLIENTE_BASE = 149.00;
-            const DTO_MOVES_PROMO_BASE = 82.64;
-            const PULSAR_MAX_PRECIOS = {
-                mono: { base: 699.00, extra7m: 100.00 },
-                tri:  { base: 750.00, extra7m: 100.00 }
-            };
-            let estado = {
-                tipoInstalacion: 'none',
-                cargador: 'pulsar',
-                fase: 'mono',
-                clienteIberdrola: true,
-                promoPack: false,
-                moves: true,
-                manguera7m: true,
-                ipack: true
-            };
-            function formatEUR(v) {
-                return v.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
-            }
-            function limpiarUI() {
-                document.getElementById('precioSinIva').textContent = '0,00 €';
-                document.getElementById('precioIva').textContent = '0,00 €';
-                document.getElementById('precioTotal').textContent = '0,00 €';
-                document.getElementById('precioTotalResumen').textContent = '0,00 €';
-                document.getElementById('desglose').innerHTML = '';
-                document.getElementById('promoBox').style.display = 'none';
-                const movesLinea = document.getElementById('precioMovesLinea');
-                if (movesLinea) movesLinea.textContent = '';
-                const mangueraLinea = document.getElementById('precioMangueraLinea');
-                if (mangueraLinea) mangueraLinea.textContent = '';
-                const triBadge = document.getElementById('triBadge');
-                if (triBadge) triBadge.classList.add('hidden');
-                const triNote = document.getElementById('triNote');
-                if (triNote) triNote.style.display = 'none';
-            }
-            function setTipoInstalacion(valor) {
-                estado.tipoInstalacion = valor;
-                document.getElementById('avisoGarajeDistinto').style.display = valor === 'com_distinto' ? 'block' : 'none';
-                updateCalc();
-            }
-            function setCargador(tipo) {
-                estado.cargador = tipo;
-                document.getElementById('btnVestel').classList.toggle('active-purple', tipo === 'vestel');
-                document.getElementById('btnPulsar').classList.toggle('active-purple', tipo === 'pulsar');
-                const chkM = document.getElementById('checkManguera');
-                const mangueraLinea = document.getElementById('precioMangueraLinea');
-                const phaseWrap = document.getElementById('pulsarPhaseWrapper');
-                if (tipo === 'vestel') {
-                    chkM.checked = false;
-                    chkM.disabled = true;
-                    estado.manguera7m = false;
-                    if (mangueraLinea) mangueraLinea.textContent = 'No disponible con Vestel';
-                    phaseWrap.classList.add('hidden');
-                } else {
-                    chkM.disabled = false;
-                    phaseWrap.classList.remove('hidden');
-                    if (mangueraLinea) mangueraLinea.textContent = chkM.checked ? '+0,00 € (incluido en Pulsar 7 m)' : '+0,00 € (versión 5 m)';
-                }
-                updateCalc();
-                showChargerInfo(tipo);
-            }
-            function setFase(fase) {
-                estado.fase = fase;
-                document.getElementById('btnMono').classList.toggle('active', fase === 'mono');
-                document.getElementById('btnTri').classList.toggle('active', fase === 'tri');
-                updateCalc();
-            }
-            function updateCalc() {
-                const chkCliente = document.getElementById('checkCliente');
-                const chkPromo = document.getElementById('checkPromoPack');
-                const chkIPack = document.getElementById('checkIPack');
-                const chkManguera = document.getElementById('checkManguera');
-                let nuevoCliente = chkCliente.checked;
-                let nuevoPromo = chkPromo.checked;
-                if (nuevoCliente && nuevoPromo) {
-                    if (estado.clienteIberdrola && !estado.promoPack) {
-                        nuevoCliente = false;
-                        chkCliente.checked = false;
-                    } else if (!estado.clienteIberdrola && estado.promoPack) {
-                        nuevoPromo = false;
-                        chkPromo.checked = false;
-                    } else {
-                        nuevoPromo = false;
-                        chkPromo.checked = false;
-                    }
-                }
-                if (nuevoPromo && !chkIPack.checked) {
-                    chkIPack.checked = true;
-                }
-                estado.clienteIberdrola = nuevoCliente;
-                estado.promoPack = nuevoPromo;
-                estado.moves = document.getElementById('checkMoves').checked;
-                if (estado.cargador === 'vestel') {
-                    chkManguera.checked = false;
-                    chkManguera.disabled = true;
-                    estado.manguera7m = false;
-                } else {
-                    chkManguera.disabled = false;
-                    estado.manguera7m = chkManguera.checked;
-                }
-                estado.ipack = document.getElementById('checkIPack').checked;
-                if (!estado.ipack && estado.promoPack) {
-                    estado.promoPack = false;
-                    chkPromo.checked = false;
-                }
-                calcularPresupuesto();
-                actualizarAvisoTrifasico();
-            }
-            function calcularPresupuesto() {
-                if (estado.tipoInstalacion === 'none') {
-                    document.getElementById('avisoGarajeDistinto').style.display = 'none';
-                    limpiarUI();
-                    return;
-                }
-                let items = [];
-                let baseTotal = 0;
-                let prBase = 0;
-                let conceptoPR = '';
-                if (estado.cargador === 'vestel') {
-                    prBase = PRECIOS_PR_BASE.vestel_base;
-                    conceptoPR = 'Punto de Recarga Vestel Basic 7,4 kW Tipo 2 5 m';
-                } else {
-                    if (estado.fase === 'tri') {
-                        if (estado.manguera7m) {
-                            prBase = PRECIOS_PR_BASE.pulsar_tri_7m;
-                            conceptoPR = 'Pulsar Max Trifásico 22 kW Tipo 2 · 7 m';
-                        } else {
-                            prBase = PRECIOS_PR_BASE.pulsar_tri_5m;
-                            conceptoPR = 'Pulsar Max Trifásico 22 kW Tipo 2 · 5 m';
-                        }
-                    } else {
-                        if (estado.manguera7m) {
-                            prBase = PRECIOS_PR_BASE.pulsar_7m;
-                            conceptoPR = 'Pulsar Max Monofásico 7,4 kW Tipo 2 · 7 m';
-                        } else {
-                            prBase = PRECIOS_PR_BASE.pulsar_5m;
-                            conceptoPR = 'Pulsar Max Monofásico 7,4 kW Tipo 2 · 5 m';
-                        }
-                    }
-                }
-                baseTotal += prBase;
-                items.push({ concepto: conceptoPR, importe: prBase, destacado: true });
-                const tipo = estado.tipoInstalacion;
-                let instBase = PRECIOS_INST_BASE[tipo] || 0;
-                let conceptoInst = '';
-                const esUni = (tipo === 'uni' || tipo === 'uni_gdp');
-                const incluyeGDP = (tipo === 'uni_gdp' || tipo === 'com_mismo_gdp');
-                if (esUni && !incluyeGDP) conceptoInst = 'Paquete instalación Vivienda Unifamiliar';
-                else if (esUni && incluyeGDP) conceptoInst = 'Paquete instalación Vivienda Unifamiliar + GDP';
-                else if (tipo === 'com_mismo') conceptoInst = 'Paquete instalación Garaje Comunitario (mismo edificio)';
-                else if (tipo === 'com_mismo_gdp') conceptoInst = 'Paquete instalación Garaje Comunitario + GDP (mismo edificio)';
-                else if (tipo === 'com_distinto') conceptoInst = 'Paquete instalación Garaje Comunitario (distinto edificio)';
-                const esPulsarTrifasico = (estado.cargador === 'pulsar' && estado.fase === 'tri');
-                if (esPulsarTrifasico) {
-                    items.push({
-                        concepto: conceptoInst + ' (a determinar in situ para Pulsar Max trifásico)',
-                        importeTexto: '—'
-                    });
-                    instBase = 0;
-                } else {
-                    if (instBase > 0) {
-                        baseTotal += instBase;
-                        items.push({ concepto: conceptoInst, importe: instBase, destacado: true });
-                    }
-                }
-                const promoActiva = estado.promoPack && estado.ipack;
-                if (promoActiva) {
-                    const dtoPR = +(prBase * 0.10).toFixed(2);
-                    baseTotal -= dtoPR;
-                    items.push({ concepto: 'Descuento 10 % Punto de Recarga', importe: -dtoPR, descuento: true });
-                    if (instBase > 0) {
-                        const dtoInst = +(instBase * 0.10).toFixed(2);
-                        baseTotal -= dtoInst;
-                        items.push({ concepto: 'Descuento 10 % Paquete de instalación', importe: -dtoInst, descuento: true });
-                    }
-                }
-                if (estado.moves) {
-                    if (estado.clienteIberdrola && !estado.promoPack) {
-                        baseTotal += PRECIO_MOVES_CLIENTE_BASE;
-                        items.push({ concepto: 'Gestión Ayudas Smart Mobility (MOVES III)', importe: PRECIO_MOVES_CLIENTE_BASE });
-                    } else if (promoActiva && !estado.clienteIberdrola) {
-                        baseTotal += PRECIO_MOVES_GENERAL_BASE;
-                        items.push({ concepto: 'Gestión Ayudas Smart Mobility (MOVES III)', importe: PRECIO_MOVES_GENERAL_BASE });
-                        baseTotal -= DTO_MOVES_PROMO_BASE;
-                        items.push({ concepto: 'Descuento Gestión Ayudas MOVES III (oferta 10 %)', importe: -DTO_MOVES_PROMO_BASE, descuento: true });
-                    } else {
-                        baseTotal += PRECIO_MOVES_GENERAL_BASE;
-                        items.push({ concepto: 'Gestión Ayudas Smart Mobility (MOVES III)', importe: PRECIO_MOVES_GENERAL_BASE });
-                    }
-                }
-                if (estado.ipack) {
-                    items.push({ concepto: 'Servicio i+Pack Mobility (no incluido en el total)', importeTexto: '12,95 €/mes + IVA' });
-                }
-                const baseSinIva = +baseTotal.toFixed(2);
-                const ivaImporte = +(baseSinIva * IVA_TIPO).toFixed(2);
-                const totalConIva = +(baseSinIva + ivaImporte).toFixed(2);
-                document.getElementById('precioSinIva').textContent = formatEUR(baseSinIva);
-                document.getElementById('precioIva').textContent = formatEUR(ivaImporte);
-                document.getElementById('precioTotal').textContent = formatEUR(totalConIva);
-                document.getElementById('precioTotalResumen').textContent = formatEUR(totalConIva);
-                document.getElementById('promoBox').style.display = promoActiva ? 'block' : 'none';
-                const precioMovesBaseLinea = (estado.clienteIberdrola && !estado.promoPack) ? PRECIO_MOVES_CLIENTE_BASE : PRECIO_MOVES_GENERAL_BASE;
-                let textoMoves = '+';
-                if (estado.moves) {
-                    let neto = precioMovesBaseLinea;
-                    if (promoActiva && !estado.clienteIberdrola) neto -= DTO_MOVES_PROMO_BASE;
-                    textoMoves += formatEUR(neto);
-                } else {
-                    if (promoActiva && !estado.clienteIberdrola) textoMoves += formatEUR(precioMovesBaseLinea - DTO_MOVES_PROMO_BASE);
-                    else textoMoves += formatEUR(precioMovesBaseLinea);
-                }
-                document.getElementById('precioMovesLinea').textContent = textoMoves;
-                const mangueraLinea = document.getElementById('precioMangueraLinea');
-                if (estado.cargador === 'vestel') {
-                    if (mangueraLinea) mangueraLinea.textContent = 'No disponible con Vestel';
-                } else {
-                    if (mangueraLinea) mangueraLinea.textContent = estado.manguera7m ? '+0,00 € (incluido en Pulsar 7 m)' : '+0,00 € (versión 5 m)';
-                }
-                const desgloseHTML = items.map(i => {
-                    let importeStr = '';
-                    let clases = 'desglose-precio';
-                    if (typeof i.importe === 'number') {
-                        importeStr = formatEUR(i.importe);
-                        if (i.importe < 0) clases += ' negativo';
-                    } else if (i.importeTexto) {
-                        importeStr = i.importeTexto;
-                    }
-                    if (i.descuento) clases += ' descuento';
-                    return `<div class="desglose-item ${i.destacado ? 'destacado' : ''}">
-                                <span class="desglose-concepto">${i.concepto}</span>
-                                <span class="${clases}">${importeStr}</span>
-                            </div>`;
-                }).join('');
-                document.getElementById('desglose').innerHTML = desgloseHTML;
-            }
-            function renderPulsarPrices() {
-                const b = PULSAR_MAX_PRECIOS;
-                const iva = (n) => +(n * (1 + IVA_TIPO)).toFixed(2);
-                const html = `
-                    <div class="price-card">
-                        <h4>Monofásico 7,4 kW <span class="badge">Tipo 2</span></h4>
-                        <div class="price-row"><span class="tag">5 m</span><span>${formatEUR(b.mono.base)} <span style="opacity:.7;">/ ${formatEUR(iva(b.mono.base))} IVA incl.</span></span></div>
-                        <div class="price-row"><span class="tag">7 m</span><span>${formatEUR(b.mono.base + b.mono.extra7m)} <span style="opacity:.7;">/ ${formatEUR(iva(b.mono.base + b.mono.extra7m))} IVA incl.</span></span></div>
-                    </div>
-                    <div class="price-card">
-                        <h4>Trifásico 22 kW <span class="badge">Tipo 2</span></h4>
-                        <div class="price-row"><span class="tag">5 m</span><span>${formatEUR(b.tri.base)} <span style="opacity:.7;">/ ${formatEUR(iva(b.tri.base))} IVA incl.</span></span></div>
-                        <div class="price-row"><span class="tag">7 m</span><span>${formatEUR(b.tri.base + b.tri.extra7m)} <span style="opacity:.7;">/ ${formatEUR(iva(b.tri.base + b.tri.extra7m))} IVA incl.</span></span></div>
-                    </div>
-                `;
-                const cont = document.getElementById('pulsarPrices');
-                if (cont) cont.innerHTML = html;
-            }
-            function showChargerInfo(tipo) {
-                const box = document.getElementById('chargerInfoBox');
-                const chipVestel = document.getElementById('chipVestel');
-                const chipPulsar = document.getElementById('chipPulsar');
-                if (!box || !chipVestel || !chipPulsar) return;
-                chipVestel.classList.toggle('active-chip', tipo === 'vestel');
-                chipPulsar.classList.toggle('active-chip', tipo === 'pulsar');
-                let html = '';
-                if (tipo === 'vestel') {
-                    html = `
-                        <strong>Vestel EVC04</strong>
-                        <ul>
-                            <li>Equipo doméstico robusto con manguera integrada de 5 m.</li>
-                            <li>Disponible con conector Tipo 1 o Tipo 2, hasta 7,4 kW en monofásico y 22 kW en trifásico.</li>
-                            <li>Grados de protección IP54 / IK10: apto para interior y exterior.</li>
-                            <li>Incluye detector de fugas de continua y cumple normativa Z.E. Ready 1.4.</li>
-                            <li>Acceso mediante tarjetas RFID para bloquear/desbloquear el equipo.</li>
-                            <li>No es “smart”: no se gestiona desde app, ideal para quien busca algo sencillo y económico.</li>
-                        </ul>
-                        <p style="margin-top:.35rem;">Recomendado para clientes que priorizan precio y robustez frente a funciones avanzadas.</p>
-                    `;
-                } else {
-                    html = `
-                        <strong>Wallbox Pulsar Max</strong>
-                        <ul>
-                            <li>Cargador “smart” con manguera integrada (5 m u opcional 7 m) y conector Tipo 2.</li>
-                            <li>Gestión completa desde app Wallbox (Wi-Fi y Bluetooth): programar carga, ver histórico, bloquear equipo, etc.</li>
-                            <li>Compatible con control por voz (Alexa / Google Assistant).</li>
-                            <li>Diseño mejorado: carcasa negro mate antiarañazos, menor peso y mejor integración estética en garaje.</li>
-                            <li>Mayor protección: IP55 (polvo/agua) e IK10 (resistencia a golpes y caídas).</li>
-                            <li>Rango de temperatura ampliado: de -30 ºC a 50 ºC.</li>
-                            <li>Incluye placa posterior deslizante y soporte integrado para enrollar la manguera.</li>
-                            <li>Preparado para balanceo de carga de hasta 100 cargadores y adaptado a normativa de ciberseguridad RED 2025.</li>
-                        </ul>
-                        <p style="margin-top:.35rem;">Ideal para clientes que buscan un equipo premium, conectado y preparado para futuras ampliaciones.</p>
-                    `;
-                }
-                box.innerHTML = html;
-                box.style.display = 'block';
-            }
-            function toggleSSAA() {
-                const body = document.getElementById('ssaaBody');
-                const acc = document.getElementById('accordionSSAA');
-                if (!body || !acc) return;
-                const open = body.style.display === 'block';
-                body.style.display = open ? 'none' : 'block';
-                if (open) { acc.classList.remove('open'); }
-                else { acc.classList.add('open'); }
-            }
-            function actualizarAvisoTrifasico() {
-                const es = (estado.cargador === 'pulsar' && estado.fase === 'tri');
-                const triBadge = document.getElementById('triBadge');
-                const triNote = document.getElementById('triNote');
-                if (triBadge) triBadge.classList.toggle('hidden', !es);
-                if (triNote) triNote.style.display = es ? 'block' : 'none';
-            }
-            updateCalc();
-            showChargerInfo(estado.cargador);
-            renderPulsarPrices();
-            document.getElementById('pulsarPhaseWrapper').classList.toggle('hidden', estado.cargador !== 'pulsar');
-            actualizarAvisoTrifasico();
-        </script>
+        <script src="scripts.js"></script>
 </body>
 </html>
