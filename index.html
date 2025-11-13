@@ -57,7 +57,7 @@
                                     <button type="button" id="btnMono" class="phase-btn active" onclick="setFase('mono')">Monofásico 7,4 kW</button>
                                     <button type="button" id="btnTri" class="phase-btn" onclick="setFase('tri')">Trifásico 22 kW</button>
                                 </div>
-                                <span id="triBadge" class="badge-tri hidden" role="status">Instalación trifásica: presupuesto a medida</span>
+                                <span id="triBadge" class="badge-tri hidden" role="status" aria-live="polite">Instalación trifásica: presupuesto a medida</span>
                             </div>
                             <div class="charger-info-header">
                                 <span class="muted-caption">Más información sobre los equipos</span>
@@ -67,12 +67,11 @@
                                 </div>
                             </div>
                             <div id="chargerInfoBox" class="info-detail-box"></div>
-                            <div id="pulsarPrices" class="pulsar-price-grid"></div>
                         </div>
 
-                        <div class="warning-box hidden" id="avisoGarajeDistinto">
-                            <span class="checkbox-title">Garaje en distinto edificio</span>
-                            <p class="checkbox-desc warning-text">Puede requerir nuevo punto de suministro. Ese coste no está incluido.</p>
+                        <div class="warning-box hidden" id="avisoGarajeDistinto" role="status" aria-live="polite">
+                            <span class="checkbox-title">Garaje comunitario en distinto edificio</span>
+                            <p class="checkbox-desc warning-text">Requiere presupuesto in situ. Contactaremos para coordinar una visita técnica.</p>
                         </div>
 
                         <div class="info-box">
@@ -176,7 +175,7 @@
                                 <div class="result-row"><span>IVA 21 %</span><span id="precioIva"></span></div>
                                 <div class="result-row"><span class="result-total-label">Total con IVA</span><span id="precioTotalResumen" class="result-total-value"></span></div>
                             </div>
-                            <div id="triNote" class="trifasico-note">Pulsar Max trifásico seleccionado: la instalación se presupuesta in situ y no se incluye en este simulador.</div>
+                            <div id="triNote" class="trifasico-note" role="status" aria-live="polite">Pulsar Max trifásico seleccionado: la instalación se presupuesta in situ y no se incluye en este simulador.</div>
                             <div class="promo-box" id="promoBox">
                                 <strong>Oferta 10 % PR + instalación + extras activa.</strong><br>
                                 Incluye un descuento adicional de <strong>100 € (IVA incl.)</strong> sobre MOVES base 199 €.

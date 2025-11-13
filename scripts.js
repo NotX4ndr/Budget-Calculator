@@ -16,10 +16,6 @@ const PRECIOS_INST_BASE = {
 const PRECIO_MOVES_GENERAL_BASE = 199.0;
 const PRECIO_MOVES_CLIENTE_BASE = 149.0;
 const DTO_MOVES_PROMO_BASE = 82.64;
-const PULSAR_MAX_PRECIOS = {
-    mono: { base: 699.0, extra7m: 100.0 },
-    tri: { base: 750.0, extra7m: 100.0 },
-};
 let estado = {
     tipoInstalacion: 'none',
     cargador: 'pulsar',
@@ -261,24 +257,6 @@ function calcularPresupuesto() {
         .join('');
     document.getElementById('desglose').innerHTML = desgloseHTML;
 }
-function renderPulsarPrices() {
-    const b = PULSAR_MAX_PRECIOS;
-    const iva = (n) => +(n * (1 + IVA_TIPO)).toFixed(2);
-    const html = `
-        <div class="price-card">
-            <h4>Monofásico 7,4 kW <span class="badge">Tipo 2</span></h4>
-            <div class="price-row"><span class="tag">5 m</span><span>${formatEUR(b.mono.base)} <span class="price-iva">/ ${formatEUR(iva(b.mono.base))} IVA incl.</span></span></div>
-            <div class="price-row"><span class="tag">7 m</span><span>${formatEUR(b.mono.base + b.mono.extra7m)} <span class="price-iva">/ ${formatEUR(iva(b.mono.base + b.mono.extra7m))} IVA incl.</span></span></div>
-        </div>
-        <div class="price-card">
-            <h4>Trifásico 22 kW <span class="badge">Tipo 2</span></h4>
-            <div class="price-row"><span class="tag">5 m</span><span>${formatEUR(b.tri.base)} <span class="price-iva">/ ${formatEUR(iva(b.tri.base))} IVA incl.</span></span></div>
-            <div class="price-row"><span class="tag">7 m</span><span>${formatEUR(b.tri.base + b.tri.extra7m)} <span class="price-iva">/ ${formatEUR(iva(b.tri.base + b.tri.extra7m))} IVA incl.</span></span></div>
-        </div>
-    `;
-    const cont = document.getElementById('pulsarPrices');
-    if (cont) cont.innerHTML = html;
-}
 function showChargerInfo(tipo) {
     const box = document.getElementById('chargerInfoBox');
     const chipVestel = document.getElementById('chipVestel');
@@ -338,6 +316,5 @@ function actualizarAvisoTrifasico() {
 }
 updateCalc();
 showChargerInfo(estado.cargador);
-renderPulsarPrices();
 document.getElementById('pulsarPhaseWrapper').classList.toggle('hidden', estado.cargador !== 'pulsar');
 actualizarAvisoTrifasico();
