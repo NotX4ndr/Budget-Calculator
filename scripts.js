@@ -270,7 +270,7 @@ function showChargerInfo(tipo) {
             <strong>Vestel EVC04</strong>
             <ul>
                 <li>Equipo doméstico robusto con manguera integrada de 5 m.</li>
-                <li>Disponible con conector Tipo 1 o Tipo 2, hasta 7,4 kW en monofásico y 22 kW en trifásico.</li>
+                <li>Disponible con conector Tipo 2, hasta 7,4 kW en monofásico y 22 kW en trifásico.</li>
                 <li>Grados de protección IP54 / IK10: apto para interior y exterior.</li>
                 <li>Incluye detector de fugas de continua y cumple normativa Z.E. Ready 1.4.</li>
                 <li>Acceso mediante tarjetas RFID para bloquear/desbloquear el equipo.</li>
