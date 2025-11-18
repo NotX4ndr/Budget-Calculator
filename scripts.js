@@ -15,7 +15,7 @@ const PRECIOS_INST_BASE = {
 };
 const PRECIO_MOVES_GENERAL_BASE = 199.0;
 const PRECIO_MOVES_CLIENTE_BASE = 149.0;
-const DTO_MOVES_PROMO_BASE = 82.64;
+const DTO_MOVES_PROMO_BASE = 100.0;
 let estado = {
     tipoInstalacion: 'none',
     cargador: 'pulsar',
