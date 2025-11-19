@@ -20,7 +20,7 @@ const DETALLES_INSTALACION = {
             'Alcance definido en el argumentario oficial para chalets o adosados en los que el contador y el garaje comparten parcela.',
         puntos: [
             'Montaje, conexionado y legalización del nuevo circuito dedicado, con protecciones en origen y en la vivienda.',
-            'Canalización hasta 20 m desde el cuadro eléctrico hasta el punto de recarga.',
+            'Canalización hasta 10 m desde el cuadro eléctrico hasta el punto de recarga.',
             'Cableados libres de halógenos y dimensionados para Smart Mobility Hogar.',
             'Legalización con memoria técnica y entrega de la documentación al cliente.',
             'Servicio Power Boost opcional para gestión dinámica de potencia.',
@@ -32,7 +32,7 @@ const DETALLES_INSTALACION = {
             'Mismo contenido que la instalación unifamiliar estándar incorporando el Gestor Dinámico de Potencia (GDP).',
         puntos: [
             'Montaje, conexionado y legalización del circuito dedicado con protecciones completas.',
-            'Canalización hasta 20 m y cableados libres de halógenos específicos para el punto de recarga.',
+            'Canalización hasta 10 m y cableados libres de halógenos específicos para el punto de recarga.',
             'Instalación y configuración del GDP junto al cuadro general para equilibrar consumos.',
             'Legalización con memoria técnica y entrega de boletín.',
             'Servicio Power Boost opcional integrado con el GDP.',
@@ -44,7 +44,7 @@ const DETALLES_INSTALACION = {
         descripcion:
             'Corresponde al escenario A del argumentario (garaje comunitario en la misma finca que la vivienda).',
         puntos: [
-            'Montaje de canalización hasta 40 m por zonas comunes según normativa vigente.',
+            'Montaje de canalización hasta 20 m por zonas comunes según normativa vigente.',
             'Montaje, conexionado y legalización del nuevo circuito con protecciones en origen y en la vivienda.',
             'Legalización mediante memoria técnica con documentación completa para el cliente.',
             'Cableados libres de halógenos preparados para Smart Mobility Hogar.',
@@ -57,7 +57,7 @@ const DETALLES_INSTALACION = {
         descripcion:
             'Incluye el paquete del escenario A añadiendo la instalación y puesta en marcha del Gestor Dinámico de Potencia.',
         puntos: [
-            'Canalización hasta 40 m por zonas comunes con soportes y protecciones homologadas.',
+            'Canalización hasta 20 m por zonas comunes con soportes y protecciones homologadas.',
             'Montaje y legalización del nuevo circuito con protecciones completas en origen y vivienda.',
             'Instalación del GDP junto al contador para priorizar la vivienda frente a la plaza.',
             'Documentación técnica, boletín y comunicación a la comunidad (art. 17.5 LPH).',
@@ -73,7 +73,7 @@ const DETALLES_INSTALACION = {
             'Incluye visita técnica in situ, estudio del trazado exterior y memoria valorada para comunidad y distribuidora.',
             'Gestión de permisos municipales/comunitarios y coordinación con terceros para canalizaciones especiales.',
             'Documentación completa (proyecto o memoria técnica, boletín y certificaciones de puesta en servicio).',
-            'Estimación inicial hasta 40 m de línea: si el recorrido es mayor se recalcula tras la visita.',
+            'Estimación inicial hasta 20 m de línea: si el recorrido es mayor se recalcula tras la visita.',
         ],
         nota: 'El precio final se confirma después de la visita técnica debido a la complejidad fuera de la finca.',
     },
