@@ -52,10 +52,21 @@ main { display: block; }
 .desglose-items { display: flex; flex-direction: column; gap: .5rem; }
 .desglose-item { display: flex; justify-content: space-between; align-items: flex-start; padding: .5rem .75rem; border-radius: .5rem; background: white; border: 1px solid #e5e7eb; font-size: .875rem; }
 .desglose-item.destacado { background: #ecfdf5; border-color: #6ee7b7; }
+.desglose-concepto-wrapper { display: flex; align-items: flex-start; gap: .35rem; flex: 1; }
 .desglose-concepto { color: #374151; max-width: 70%; }
 .desglose-precio { font-weight: 600; font-size: .875rem; white-space: nowrap; margin-left: .5rem; color: #111827; }
 .desglose-precio.descuento { color: #16a34a; }
 .desglose-precio.negativo { color: #b91c1c; }
+.info-btn { border: none; background: #e0f2fe; color: #0369a1; border-radius: 9999px; width: 1.5rem; height: 1.5rem; font-size: .85rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; padding: 0; transition: background .15s; }
+.info-btn:hover { background: #bae6fd; }
+.instalacion-info-panel { margin-top: 1rem; border: 1px solid #bae6fd; background: #eff6ff; border-radius: .75rem; padding: 1rem; font-size: .85rem; color: #0f172a; }
+.instalacion-info-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: .5rem; gap: .5rem; }
+.instalacion-info-title { font-weight: 600; color: #0c4a6e; }
+.close-info-btn { border: none; background: none; font-size: 1.25rem; line-height: 1; cursor: pointer; color: #0c4a6e; }
+.close-info-btn:hover { color: #1d4ed8; }
+.instalacion-info-content ul { margin-left: 1rem; margin-top: .35rem; list-style: disc; }
+.instalacion-info-content li { margin-bottom: .15rem; }
+.instalacion-info-note { margin-top: .5rem; color: #0c4a6e; font-weight: 500; }
 .promo-box { margin-top: 1rem; background: #ecfdf5; border: 1px solid #6ee7b7; padding: .75rem 1rem; border-radius: .75rem; font-size: .8rem; color: #065f46; display: none; }
 .cashback-box { margin-top: 1rem; background: #e0f2fe; border: 1px solid #7dd3fc; padding: .75rem 1rem; border-radius: .75rem; font-size: .8rem; color: #0f172a; }
 .accordion { margin-top: 1.5rem; padding: 1rem 1.1rem; background: #f9fafb; border-radius: .75rem; border: 1px solid #e5e7eb; }

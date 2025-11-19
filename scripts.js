@@ -13,6 +13,82 @@ const PRECIOS_INST_BASE = {
     com_mismo_gdp: 1098.0,
     com_distinto: 1087.79,
 };
+const DETALLES_INSTALACION = {
+    uni: {
+        titulo: 'Instalación en vivienda unifamiliar',
+        descripcion:
+            'Alcance definido en el argumentario oficial para chalets o adosados en los que el contador y el garaje comparten parcela.',
+        puntos: [
+            'Montaje, conexionado y legalización del nuevo circuito dedicado, con protecciones en origen y en la vivienda.',
+            'Canalización hasta 20 m desde el cuadro eléctrico hasta el punto de recarga.',
+            'Cableados libres de halógenos y dimensionados para Smart Mobility Hogar.',
+            'Legalización con memoria técnica y entrega de la documentación al cliente.',
+            'Servicio Power Boost opcional para gestión dinámica de potencia.',
+        ],
+    },
+    uni_gdp: {
+        titulo: 'Instalación en vivienda unifamiliar + GDP',
+        descripcion:
+            'Mismo contenido que la instalación unifamiliar estándar incorporando el Gestor Dinámico de Potencia (GDP).',
+        puntos: [
+            'Montaje, conexionado y legalización del circuito dedicado con protecciones completas.',
+            'Canalización hasta 20 m y cableados libres de halógenos específicos para el punto de recarga.',
+            'Instalación y configuración del GDP junto al cuadro general para equilibrar consumos.',
+            'Legalización con memoria técnica y entrega de boletín.',
+            'Servicio Power Boost opcional integrado con el GDP.',
+        ],
+        nota: 'El GDP permite aprovechar toda la potencia contratada evitando disparos del ICP al sumar consumos en la vivienda.',
+    },
+    com_mismo: {
+        titulo: 'Instalación en garaje comunitario (mismo edificio)',
+        descripcion:
+            'Corresponde al escenario A del argumentario (garaje comunitario en la misma finca que la vivienda).',
+        puntos: [
+            'Montaje de canalización hasta 40 m por zonas comunes según normativa vigente.',
+            'Montaje, conexionado y legalización del nuevo circuito con protecciones en origen y en la vivienda.',
+            'Legalización mediante memoria técnica con documentación completa para el cliente.',
+            'Cableados libres de halógenos preparados para Smart Mobility Hogar.',
+            'Documentación y comunicación a la comunidad conforme al art. 17.5 de la LPH.',
+            'Servicio Power Boost opcional.',
+        ],
+    },
+    com_mismo_gdp: {
+        titulo: 'Instalación en garaje comunitario + GDP (mismo edificio)',
+        descripcion:
+            'Incluye el paquete del escenario A añadiendo la instalación y puesta en marcha del Gestor Dinámico de Potencia.',
+        puntos: [
+            'Canalización hasta 40 m por zonas comunes con soportes y protecciones homologadas.',
+            'Montaje y legalización del nuevo circuito con protecciones completas en origen y vivienda.',
+            'Instalación del GDP junto al contador para priorizar la vivienda frente a la plaza.',
+            'Documentación técnica, boletín y comunicación a la comunidad (art. 17.5 LPH).',
+            'Servicio Power Boost opcional ligado al GDP.',
+        ],
+        nota: 'El GDP es imprescindible para compartir potencia sin aumentar la contratada y mantener la seguridad de la instalación.',
+    },
+    com_distinto: {
+        titulo: 'Instalación en garaje comunitario (distinto edificio)',
+        descripcion:
+            'Pensado para plazas ubicadas en comunidades que no comparten edificio con la vivienda o el contador.',
+        puntos: [
+            'Incluye visita técnica in situ, estudio del trazado exterior y memoria valorada para comunidad y distribuidora.',
+            'Gestión de permisos municipales/comunitarios y coordinación con terceros para canalizaciones especiales.',
+            'Documentación completa (proyecto o memoria técnica, boletín y certificaciones de puesta en servicio).',
+            'Estimación inicial hasta 40 m de línea: si el recorrido es mayor se recalcula tras la visita.',
+        ],
+        nota: 'El precio final se confirma después de la visita técnica debido a la complejidad fuera de la finca.',
+    },
+    gdp: {
+        titulo: 'Gestor Dinámico de Potencia (GDP)',
+        descripcion:
+            'Equipo que monitoriza el consumo de la vivienda y ajusta automáticamente la potencia disponible para el cargador.',
+        puntos: [
+            'Evita cortes al equilibrar el uso del PR con el resto de electrodomésticos.',
+            'Permite aprovechar toda la potencia contratada sin ampliarla.',
+            'Se instala junto al cuadro general y se integra con Power Boost cuando el cliente lo contrata.',
+        ],
+    },
+};
+const PRECIO_GDP_INFO = 240.79;
 const PRECIO_MOVES_GENERAL_BASE = 199.0;
 const PRECIO_MOVES_CLIENTE_BASE = 149.0;
 const DTO_MOVES_PROMO_BASE = 100.0;
@@ -133,6 +209,7 @@ function calcularPresupuesto() {
         limpiarUI();
         return;
     }
+    cerrarInstalacionInfo();
     let items = [];
     let baseTotal = 0;
     let prBase = 0;
@@ -169,15 +246,24 @@ function calcularPresupuesto() {
         conceptoInst = 'Paquete instalación Garaje Comunitario + GDP (mismo edificio)';
     else if (tipo === 'com_distinto') conceptoInst = 'Paquete instalación Garaje Comunitario (distinto edificio)';
     const esPulsarTrifasico = estado.cargador === 'pulsar' && estado.fase === 'tri';
+    const infoKeyInstalacion = tipo;
     if (esPulsarTrifasico) {
         items.push({
             concepto: `${conceptoInst} (a determinar in situ para Pulsar Max trifásico)`,
             importeTexto: '—',
+            infoKey: infoKeyInstalacion,
         });
         instBase = 0;
     } else if (instBase > 0) {
         baseTotal += instBase;
-        items.push({ concepto: conceptoInst, importe: instBase, destacado: true });
+        items.push({ concepto: conceptoInst, importe: instBase, destacado: true, infoKey: infoKeyInstalacion });
+    }
+    if (incluyeGDP) {
+        items.push({
+            concepto: 'Gestor Dinámico de Potencia (incluido en la instalación)',
+            importeTexto: `${formatEUR(PRECIO_GDP_INFO)} IVA incl. (no suma, ya incluido en el paquete)`,
+            infoKey: 'gdp',
+        });
     }
     const promoActiva = estado.promoPack && estado.ipack;
     if (promoActiva) {
@@ -247,15 +333,52 @@ function calcularPresupuesto() {
                 importeStr = i.importeTexto;
             }
             if (i.descuento) clases += ' descuento';
+            const infoBtn = i.infoKey
+                ? `<button type="button" class="info-btn" data-info-key="${i.infoKey}" aria-label="Qué incluye esta instalación">ℹ️</button>`
+                : '';
             return `
                 <div class="desglose-item ${i.destacado ? 'destacado' : ''}">
-                    <span class="desglose-concepto">${i.concepto}</span>
+                    <div class="desglose-concepto-wrapper">
+                        <span class="desglose-concepto">${i.concepto}</span>
+                        ${infoBtn}
+                    </div>
                     <span class="${clases}">${importeStr}</span>
                 </div>
             `;
         })
         .join('');
     document.getElementById('desglose').innerHTML = desgloseHTML;
+}
+function mostrarInfoInstalacion(key) {
+    if (!key) return;
+    const detalle = DETALLES_INSTALACION[key];
+    const panel = document.getElementById('instalacionInfoPanel');
+    const titulo = document.getElementById('instalacionInfoTitle');
+    const contenido = document.getElementById('instalacionInfoContent');
+    if (!detalle || !panel || !titulo || !contenido) return;
+    titulo.textContent = detalle.titulo;
+    let html = '';
+    if (detalle.descripcion) {
+        html += `<p>${detalle.descripcion}</p>`;
+    }
+    if (Array.isArray(detalle.puntos) && detalle.puntos.length) {
+        const items = detalle.puntos.map((p) => `<li>${p}</li>`).join('');
+        html += `<ul>${items}</ul>`;
+    }
+    if (detalle.nota) {
+        html += `<p class="instalacion-info-note">${detalle.nota}</p>`;
+    }
+    contenido.innerHTML = html;
+    panel.classList.remove('hidden');
+}
+function cerrarInstalacionInfo() {
+    const panel = document.getElementById('instalacionInfoPanel');
+    if (!panel) return;
+    panel.classList.add('hidden');
+    const contenido = document.getElementById('instalacionInfoContent');
+    if (contenido) contenido.innerHTML = '';
+    const titulo = document.getElementById('instalacionInfoTitle');
+    if (titulo) titulo.textContent = '';
 }
 function showChargerInfo(tipo) {
     const box = document.getElementById('chargerInfoBox');
@@ -318,3 +441,12 @@ updateCalc();
 showChargerInfo(estado.cargador);
 document.getElementById('pulsarPhaseWrapper').classList.toggle('hidden', estado.cargador !== 'pulsar');
 actualizarAvisoTrifasico();
+const desgloseContainer = document.getElementById('desglose');
+if (desgloseContainer) {
+    desgloseContainer.addEventListener('click', (event) => {
+        const btn = event.target.closest('.info-btn');
+        if (!btn) return;
+        const key = btn.getAttribute('data-info-key');
+        mostrarInfoInstalacion(key);
+    });
+}
