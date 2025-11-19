@@ -11,7 +11,7 @@ const PRECIOS_INST_BASE = {
     uni_gdp: 898.0,
     com_mismo: 899.0,
     com_mismo_gdp: 1098.0,
-    com_distinto: 1087.79,
+    com_distinto: 00.0,
 };
 const DETALLES_INSTALACION = {
     uni: {
