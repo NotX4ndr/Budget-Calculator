@@ -27,6 +27,8 @@ main { display: block; }
 .select { width: 100%; padding: .6rem .75rem; border-radius: .5rem; border: 1px solid #d1d5db; font-size: .9rem; color: #14532d; background: white; }
 .checkbox-box { display: flex; align-items: flex-start; gap: .75rem; padding: 1rem; border-radius: .5rem; cursor: pointer; }
 .checkbox-box input { margin-top: .25rem; width: 1.25rem; height: 1.25rem; cursor: pointer; }
+.checkbox-box input:disabled { cursor: not-allowed; }
+.checkbox-box input:disabled + .checkbox-content { opacity: .6; }
 .checkbox-content { flex: 1; }
 .checkbox-title { font-weight: 500; color: #14532d; }
 .checkbox-desc { font-size: .875rem; color: #374151; margin-top: .25rem; }

@@ -90,15 +90,12 @@ const DETALLES_INSTALACION = {
 };
 const PRECIO_GDP_INFO = 240.79;
 const PRECIO_MOVES_GENERAL_BASE = 199.0;
-const PRECIO_MOVES_CLIENTE_BASE = 149.0;
-const DTO_MOVES_PROMO_BASE = 100.0;
 let estado = {
     tipoInstalacion: 'none',
     cargador: 'pulsar',
     fase: 'mono',
-    clienteIberdrola: true,
     promoPack: false,
-    moves: true,
+    moves: false,
     manguera7m: true,
     ipack: true,
 };
@@ -117,11 +114,9 @@ function limpiarUI() {
     const promo = document.getElementById('promoBox');
     if (promo) promo.style.display = 'none';
     const movesLinea = document.getElementById('precioMovesLinea');
-    if (movesLinea) movesLinea.textContent = '';
+    if (movesLinea) movesLinea.textContent = 'No disponible';
     const mangueraLinea = document.getElementById('precioMangueraLinea');
     if (mangueraLinea) mangueraLinea.textContent = '';
-    const triBadge = document.getElementById('triBadge');
-    if (triBadge) triBadge.classList.add('hidden');
     const triNote = document.getElementById('triNote');
     if (triNote) triNote.style.display = '';
 }
@@ -162,30 +157,15 @@ function setFase(fase) {
     updateCalc();
 }
 function updateCalc() {
-    const chkCliente = document.getElementById('checkCliente');
     const chkPromo = document.getElementById('checkPromoPack');
     const chkIPack = document.getElementById('checkIPack');
     const chkManguera = document.getElementById('checkManguera');
-    let nuevoCliente = chkCliente.checked;
-    let nuevoPromo = chkPromo.checked;
-    if (nuevoCliente && nuevoPromo) {
-        if (estado.clienteIberdrola && !estado.promoPack) {
-            nuevoCliente = false;
-            chkCliente.checked = false;
-        } else if (!estado.clienteIberdrola && estado.promoPack) {
-            nuevoPromo = false;
-            chkPromo.checked = false;
-        } else {
-            nuevoPromo = false;
-            chkPromo.checked = false;
-        }
-    }
-    if (nuevoPromo && !chkIPack.checked) {
+    if (chkPromo.checked && !chkIPack.checked) {
         chkIPack.checked = true;
     }
-    estado.clienteIberdrola = nuevoCliente;
-    estado.promoPack = nuevoPromo;
-    estado.moves = document.getElementById('checkMoves').checked;
+    const chkMoves = document.getElementById('checkMoves');
+    estado.promoPack = chkPromo.checked;
+    estado.moves = !!(chkMoves && chkMoves.checked && !chkMoves.disabled);
     if (estado.cargador === 'vestel') {
         chkManguera.checked = false;
         chkManguera.disabled = true;
@@ -277,18 +257,8 @@ function calcularPresupuesto() {
         }
     }
     if (estado.moves) {
-        if (estado.clienteIberdrola && !estado.promoPack) {
-            baseTotal += PRECIO_MOVES_CLIENTE_BASE;
-            items.push({ concepto: 'Gestión Ayudas Smart Mobility (MOVES III)', importe: PRECIO_MOVES_CLIENTE_BASE });
-        } else if (promoActiva && !estado.clienteIberdrola) {
-            baseTotal += PRECIO_MOVES_GENERAL_BASE;
-            items.push({ concepto: 'Gestión Ayudas Smart Mobility (MOVES III)', importe: PRECIO_MOVES_GENERAL_BASE });
-            baseTotal -= DTO_MOVES_PROMO_BASE;
-            items.push({ concepto: 'Descuento Gestión Ayudas MOVES III (oferta 10 %)', importe: -DTO_MOVES_PROMO_BASE, descuento: true });
-        } else {
-            baseTotal += PRECIO_MOVES_GENERAL_BASE;
-            items.push({ concepto: 'Gestión Ayudas Smart Mobility (MOVES III)', importe: PRECIO_MOVES_GENERAL_BASE });
-        }
+        baseTotal += PRECIO_MOVES_GENERAL_BASE;
+        items.push({ concepto: 'Gestión Ayudas Smart Mobility (MOVES III)', importe: PRECIO_MOVES_GENERAL_BASE });
     }
     if (estado.ipack) {
         items.push({ concepto: 'Servicio i+Pack Mobility (no incluido en el total)', importeTexto: '12,95 €/mes + IVA' });
@@ -302,18 +272,8 @@ function calcularPresupuesto() {
     document.getElementById('precioTotalResumen').textContent = formatEUR(totalConIva);
     const promo = document.getElementById('promoBox');
     if (promo) promo.style.display = promoActiva ? 'block' : 'none';
-    const precioMovesBaseLinea =
-        estado.clienteIberdrola && !estado.promoPack ? PRECIO_MOVES_CLIENTE_BASE : PRECIO_MOVES_GENERAL_BASE;
-    let textoMoves = '+';
-    if (estado.moves) {
-        let neto = precioMovesBaseLinea;
-        if (promoActiva && !estado.clienteIberdrola) neto -= DTO_MOVES_PROMO_BASE;
-        textoMoves += formatEUR(neto);
-    } else {
-        if (promoActiva && !estado.clienteIberdrola) textoMoves += formatEUR(precioMovesBaseLinea - DTO_MOVES_PROMO_BASE);
-        else textoMoves += formatEUR(precioMovesBaseLinea);
-    }
-    document.getElementById('precioMovesLinea').textContent = textoMoves;
+    const precioMovesLinea = document.getElementById('precioMovesLinea');
+    if (precioMovesLinea) precioMovesLinea.textContent = 'No disponible';
     const mangueraLinea = document.getElementById('precioMangueraLinea');
     if (estado.cargador === 'vestel') {
         if (mangueraLinea) mangueraLinea.textContent = 'No disponible con Vestel';
@@ -432,9 +392,7 @@ function toggleSSAA() {
 }
 function actualizarAvisoTrifasico() {
     const es = estado.cargador === 'pulsar' && estado.fase === 'tri';
-    const triBadge = document.getElementById('triBadge');
     const triNote = document.getElementById('triNote');
-    if (triBadge) triBadge.classList.toggle('hidden', !es);
     if (triNote) triNote.style.display = es ? 'block' : '';
 }
 updateCalc();
